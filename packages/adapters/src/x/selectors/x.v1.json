@@ -1,0 +1,4 @@
+{
+  "composer": "textarea",
+  "submit": "button[type='submit']"
+}

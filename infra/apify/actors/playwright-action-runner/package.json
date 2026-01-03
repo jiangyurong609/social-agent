@@ -1,0 +1,10 @@
+{
+  "name": "@social-agent/playwright-action-runner",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'apify actor build pending'",
+    "test": "echo 'tests not yet implemented'"
+  }
+}

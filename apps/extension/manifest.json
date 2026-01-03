@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Social Agent Extension",
+  "version": "0.0.0",
+  "description": "Runs approved social actions in the user's browser.",
+  "permissions": ["storage", "tabs", "scripting", "activeTab"],
+  "background": {
+    "service_worker": "background/service_worker.js"
+  },
+  "action": {
+    "default_popup": "ui/popup.html"
+  },
+  "content_scripts": [],
+  "host_permissions": ["<all_urls>"]
+}

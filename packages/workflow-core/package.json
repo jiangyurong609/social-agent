@@ -1,0 +1,18 @@
+{
+  "name": "@social-agent/workflow-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "echo 'lint not yet implemented'",
+    "test": "echo 'tests not yet implemented'"
+  },
+  "dependencies": {
+    "@social-agent/schemas": "workspace:*",
+    "@social-agent/shared": "workspace:*",
+    "@social-agent/observability": "workspace:*"
+  }
+}

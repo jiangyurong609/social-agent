@@ -1,0 +1,16 @@
+name = "social-agent-orchestrator"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+[durable_objects]
+bindings = [
+  { name = "RUN_DO", class_name = "RunDo" }
+]
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RunDo"]
+
+[vars]
+# For local dev, override with: wrangler dev --var API_BASE:http://127.0.0.1:8787
+API_BASE = "https://social-agent-api.jiangyurong609.workers.dev"

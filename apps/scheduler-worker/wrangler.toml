@@ -1,0 +1,16 @@
+name = "social-agent-scheduler"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+[[d1_databases]]
+binding = "D1"
+database_name = "social_agent_db"
+database_id = "4a15435c-7417-4d5d-b9a4-f07d6919c4f0"
+
+[vars]
+ORCHESTRATOR_BASE = "https://social-agent-orchestrator.jiangyurong609.workers.dev"
+API_BASE = "https://social-agent-api.jiangyurong609.workers.dev"
+XHS_MCP_BASE = "https://down-nomination-pairs-transparency.trycloudflare.com"
+
+[triggers]
+crons = ["0 * * * *"]  # Run every hour

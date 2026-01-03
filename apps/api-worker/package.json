@@ -1,0 +1,19 @@
+{
+  "name": "@social-agent/api-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "wrangler dev src/index.ts",
+    "lint": "echo 'lint not yet implemented'",
+    "test": "echo 'tests not yet implemented'"
+  },
+  "dependencies": {
+    "@social-agent/schemas": "workspace:*",
+    "@social-agent/shared": "workspace:*",
+    "@social-agent/workflow-core": "workspace:*",
+    "@social-agent/observability": "workspace:*",
+    "@social-agent/executors": "workspace:*"
+  }
+}

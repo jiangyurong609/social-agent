@@ -1,0 +1,4 @@
+{
+  "composeBox": "div[role='textbox']",
+  "submit": "button[type='submit']"
+}

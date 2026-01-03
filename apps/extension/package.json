@@ -1,0 +1,15 @@
+{
+  "name": "@social-agent/extension",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json && cp manifest.json dist/manifest.json && cp src/ui/*.html dist/ui/ && cp src/ui/*.css dist/ui/ && cp src/background/*.js dist/background/",
+    "dev": "echo 'extension dev server pending'",
+    "lint": "echo 'lint not yet implemented'",
+    "test": "echo 'tests not yet implemented'"
+  },
+  "dependencies": {
+    "@social-agent/shared": "workspace:*"
+  }
+}

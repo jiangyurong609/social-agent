@@ -1,0 +1,19 @@
+{
+  "name": "@social-agent/scheduler-worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "wrangler dev src/index.ts",
+    "lint": "echo 'lint not yet implemented'",
+    "test": "echo 'tests not yet implemented'"
+  },
+  "dependencies": {
+    "@social-agent/schemas": "workspace:*",
+    "@social-agent/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "platform": "x",
+  "steps": [
+    { "type": "goto", "url": "https://example.com" },
+    { "type": "waitFor", "selector": "body" },
+    { "type": "type", "selector": "body", "text": "{{text}}" }
+  ]
+}
