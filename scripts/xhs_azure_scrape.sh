@@ -123,6 +123,8 @@ for query in "${queries[@]}"; do
           author: ($note.user // $search.noteCard.user // null),
           images: ($note.imageList // [$search.noteCard.cover] // []),
           comments: ($comments[:50] | map({id:(.id // null),content:(.content // ""),author:(.userInfo // .user // null),score:(.likeCount // null),originalPublishedAt:(if (.createTime | type) == "number" then ((.createTime / 1000) | todateiso8601) else .createTime end),subCommentCount:(.subCommentCount // null)})),
+          commentsReturned: ($comments | length),
+          commentsComplete: ((($note.interactInfo.commentCount // 0) | tonumber) <= ($comments | length) and (($detail.comments.hasMore // false) | not)),
           metrics: ($note.interactInfo // $search.noteCard.interactInfo // {}),
           provenance: {sourcePayload: ("raw/detail_" + (($note.noteId // $search.id) | tostring) + ".json"), xsecToken: ($note.xsecToken // $search.xsecToken // $search.xsec_token)},
           llmText: (($note.title // "") + "\n" + ($note.desc // "") + "\n" + ($comments | map(.content // "") | join("\n")))
