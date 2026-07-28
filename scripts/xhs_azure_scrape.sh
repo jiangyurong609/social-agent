@@ -81,11 +81,26 @@ for query in "${queries[@]}"; do
       [ -n "$id" ] && [ -n "$token" ] || continue
       slug="$(printf '%s' "$id" | tr -cd '[:alnum:]_-')"
       detail_file="$RAW/detail_${slug}.json"
-      if ! curl -fsS --max-time 30 -H 'content-type: application/json' \
-        -d "$(jq -nc --arg id "$id" --arg token "$token" '{feed_id:$id,xsec_token:$token,load_all_comments:true}')" \
-        "$XHS_BASE/api/v1/feeds/detail" > "$detail_file"; then
-        continue
-      fi
+      # The MCP sometimes returns comments {list: [], hasMore: true} even
+      # when the post has comments (transient load failure) — retry the
+      # whole detail call until the list is non-empty or attempts run out.
+      detail_ok=0
+      for detail_attempt in 1 2 3; do
+        if ! curl -fsS --max-time 30 -H 'content-type: application/json' \
+          -d "$(jq -nc --arg id "$id" --arg token "$token" '{feed_id:$id,xsec_token:$token,load_all_comments:true}')" \
+          "$XHS_BASE/api/v1/feeds/detail" > "$detail_file"; then
+          sleep 3
+          continue
+        fi
+        detail_ok=1
+        comment_count="$(jq -r '(.data.data // .data // {}).note.interactInfo.commentCount // "0"' "$detail_file")"
+        comments_loaded="$(jq -r '(.data.data // .data // {}).comments.list // [] | length' "$detail_file")"
+        if [ "$comments_loaded" -gt 0 ] || [ "$comment_count" = "0" ]; then
+          break
+        fi
+        [ "$detail_attempt" -lt 3 ] && sleep 3
+      done
+      [ "$detail_ok" = "1" ] || continue
 
       jq -c --arg query "$query" --argjson search "$feed" --arg scrapedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '
         (.data.data // .data // {}) as $detail |
