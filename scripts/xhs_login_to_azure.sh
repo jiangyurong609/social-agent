@@ -21,7 +21,7 @@ else
   PYTHON=python3
 fi
 if ! curl -fsS "http://127.0.0.1:${CDP_PORT}/json/version" >/dev/null 2>&1; then
-  open -na "Google Chrome" --args --remote-debugging-port="$CDP_PORT" --remote-allow-origins='*' --user-data-dir="$PWD/.xhs-login-profile"
+  open -na "Google Chrome" --args --remote-debugging-port="$CDP_PORT" --remote-allow-origins='*' --user-data-dir="$PWD/.xhs-login-profile" https://www.xiaohongshu.com
   echo "Chrome opened. Complete Xiaohongshu login in that window; waiting up to 5 minutes."
 fi
 $PYTHON - "$CDP_PORT" "$TMP_COOKIE" <<'PY'
