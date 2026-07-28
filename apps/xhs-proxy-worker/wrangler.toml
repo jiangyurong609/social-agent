@@ -1,0 +1,10 @@
+name = "xhs-azure-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-05-01"
+
+routes = [
+  { pattern = "xhs.manus-agent.app/*", zone_name = "manus-agent.app" }
+]
+
+[vars]
+XHS_ORIGIN_URL = "http://xhs-mcp-origin-jyr.eastasia.cloudapp.azure.com"

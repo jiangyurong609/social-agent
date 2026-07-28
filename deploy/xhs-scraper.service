@@ -1,0 +1,9 @@
+[Unit]
+Description=XHS property discussion archive job
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/xhs_azure_scrape.sh
+User=root
