@@ -103,10 +103,12 @@ for query in "${queries[@]}"; do
       [ "$detail_ok" = "1" ] || continue
 
       jq -c --arg query "$query" --argjson search "$feed" --arg scrapedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '
+        def media_images: (.imageList // .images // .image_list // []);
+        def media_videos: (.videoInfo // .videoList // .videos // .video // []);
         (.data.data // .data // {}) as $detail |
         ($detail.note // {}) as $note |
         ($detail.comments.list // []) as $top |
-        ($top | map([.] + (.subComments // [])) | add // []) as $comments |
+        ($top | map(. as $parent | ([($parent | . + {parentId:null})] + (($parent.subComments // []) | map(. + {parentId:$parent.id})))) | add // []) as $comments |
         {
           recordType: "discussion",
           schemaVersion: "property-discussion.record.v1",
@@ -121,8 +123,10 @@ for query in "${queries[@]}"; do
           content: ($note.desc // ""),
           hashtags: [($note.desc // "") | scan("#[^#[:space:]]+") | sub("^#";"") | sub("\\[话题\\]$";"")] | unique,
           author: ($note.user // $search.noteCard.user // null),
-          images: ($note.imageList // [$search.noteCard.cover] // []),
-          comments: ($comments[:50] | map({id:(.id // null),content:(.content // ""),author:(.userInfo // .user // null),score:(.likeCount // null),originalPublishedAt:(if (.createTime | type) == "number" then ((.createTime / 1000) | todateiso8601) else .createTime end),subCommentCount:(.subCommentCount // null)})),
+          images: ($note | media_images),
+          videos: ($note | media_videos),
+          media: {images:($note | media_images),videos:($note | media_videos)},
+          comments: ($comments[:50] | map({id:(.id // null),parentId:(.parentId // null),isReply:((.parentId // null) != null),content:(.content // ""),author:(.userInfo // .user // null),score:(.likeCount // null),originalPublishedAt:(if (.createTime | type) == "number" then ((.createTime / 1000) | todateiso8601) else .createTime end),subCommentCount:(.subCommentCount // null),images:(. | media_images),videos:(. | media_videos),media:{images:(. | media_images),videos:(. | media_videos)}))),
           commentsReturned: ($comments | length),
           commentsComplete: ((($note.interactInfo.commentCount // 0) | tonumber) <= ($comments | length) and (($detail.comments.hasMore // false) | not)),
           metrics: ($note.interactInfo // $search.noteCard.interactInfo // {}),
